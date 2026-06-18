@@ -1,131 +1,117 @@
-import { useState, useEffect } from 'react';
-import { 
-  Box, 
-  TextField, 
-  Button, 
-  Paper, 
-  Grid,
-  Typography, 
-  Stack 
-} from '@mui/material';
-import { plausible } from '../analytics';
+import React, { useState } from 'react';
+import { Box, TextField, Button, Typography, Alert, Stack } from '@mui/material';
 
 export default function RegistrationForm() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
-  const [isInteracted, setIsInteracted] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    setIsInteracted(true);
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    plausible.trackEvent('Form Submit Success', { props: { form_name: 'registration' } });
+    setError(null);
+    setSuccess(false);
 
-    console.log('Zarejestrowano użytkownika:', formData);
+    if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError('Wszystkie pola są wymagane.');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Hasła nie są identyczne.');
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError('Hasło musi mieć co najmniej 6 znaków.');
+      return;
+    }
+
+    console.log('Formularz wysłany pomyślnie!', formData);
+
+    if (typeof window !== 'undefined' && (window as any).plausible) {
+      (window as any).plausible('Form Submit Success');
+    }
+
+    setSuccess(true);
+    alert('Rejestracja zakończona sukcesem!');
+
+    setFormData({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
   };
 
-  useEffect(() => {
-    return () => {
-      if (isInteracted && !isSubmitted) {
-        plausible.trackEvent('Form Abandoned', { props: { last_active: 'registration_screen' } });
-      }
-    };
-  }, [isInteracted, isSubmitted]);
-
   return (
-    <Box 
-      component={Paper} 
-      elevation={2} 
-      sx={{ p: 4, maxWidth: 600, mx: 'auto', mt: 4, borderRadius: 2 }}
-    >
-      <Typography variant="h5" component="h2" sx={{ mb: 3, fontWeight: 600, color: 'text.primary' }}>
-        Formularz rejestracji użytkownika
-      </Typography>
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Stack spacing={3}>
+        {error && <Alert severity="error">{error}</Alert>}
+        {success && <Alert severity="success">Konto zostało utworzone pomyślnie!</Alert>}
 
-      <Box component="form" onSubmit={handleSubmit} noValidate>
-        <Grid container spacing={3}>
-          
-          <Grid size={12}>
-            <TextField
-              required
-              fullWidth
-              id="username"
-              name="username"
-              label="Nazwa użytkownika"
-              variant="outlined"
-              value={formData.username}
-              onChange={handleChange}
-              slotProps={{
-                htmlInput: { 'aria-label': 'Wprowadź swoją nazwę użytkownika' }
-              }}
-            />
-          </Grid>
+        <TextField
+          label="Nazwa użytkownika"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
 
-          <Grid size={12}>
-            <TextField
-              required
-              fullWidth
-              id="email"
-              name="email"
-              label="Adres e-mail"
-              type="email"
-              variant="outlined"
-              value={formData.email}
-              onChange={handleChange}
-              slotProps={{
-                htmlInput: { 'aria-label': 'Wprowadź swój adres e-mail' }
-              }}
-            />
-          </Grid>
+        <TextField
+          label="Adres E-mail"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
 
-          <Grid size={12}>
-            <TextField
-              required
-              fullWidth
-              id="password"
-              name="password"
-              label="Hasło"
-              type="password"
-              variant="outlined"
-              value={formData.password}
-              onChange={handleChange}
-              slotProps={{
-                htmlInput: { 'aria-label': 'Wprowadź bezpieczne hasło' }
-              }}
-            />
-          </Grid>
+        <TextField
+          label="Hasło"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
 
-          <Grid size={12}>
-            <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end', width: '100%' }}>
-              <Button 
-                type="submit" 
-                variant="outlined" 
-                size="large"
-                sx={{
-                  color: '#003cd6',
-                  borderColor: '#003cd6',
-                  fontWeight: 600,
-                  '&:hover': {
-                    borderColor: '#002699',
-                    backgroundColor: 'rgba(0, 60, 214, 0.04)',
-                  }
-                }}
-              >
-                Utwórz konto
-              </Button>
-            </Stack>
-          </Grid>
-        </Grid>
-      </Box>
+        <TextField
+          label="Potwierdź hasło"
+          name="confirmPassword"
+          type="password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          fullWidth
+          required
+        />
+
+        <Button 
+          type="submit" 
+          variant="contained" 
+          color="primary" 
+          size="large"
+          fullWidth
+        >
+          Zarejestruj się
+        </Button>
+      </Stack>
     </Box>
   );
 }
