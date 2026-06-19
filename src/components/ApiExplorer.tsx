@@ -12,8 +12,6 @@ import {
   CircularProgress,
   Avatar
 } from '@mui/material';
-import { plausible } from '../analytics'; // Importujemy nasz tracker
-
 interface Character {
   id: number;
   name: string;
@@ -42,15 +40,7 @@ export default function ApiExplorer() {
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedSearch = searchTerm.trim();
-    setQueryParam(trimmedSearch);
-
-    /* ZDARZENIE NIESTANDARDOWE 3: Kliknięcie przycisku CTA / Filtrowania danych
-      KOMENTARZ RODO: Rejestrujemy wywołanie filtru oraz kategorię zapytania w celach statystycznych.
-      Zgodnie z art. 5 RODO (integralność i minimalizacja) dane te są w pełni zanonimizowane i nie łączą się 
-      z profilem konkretnej osoby fizycznej ani jej adresem IP.
-    */
-    plausible.trackEvent('CTA Filter Click', { props: { search_length: trimmedSearch.length } });
-  };
+    setQueryParam(trimmedSearch)  };
 
   return (
     <Box>

@@ -20,7 +20,6 @@ export default function ApiSearch() {
     queryKey: ['characters', searchTerm],
     queryFn: () => fetchCharacters(searchTerm),
     enabled: searchTerm.length > 2,
-    keepPreviousData: true,
   });
 
   return (
@@ -32,9 +31,7 @@ export default function ApiSearch() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         helperText="Wpisz co najmniej 3 znaki"
-        sx={{ mb: 4 }}
-        inputProps={{ 'aria-label': 'Wyszukiwarka postaci' }}
-      />
+        sx={{ mb: 4 }}      />
 
       {(isLoading || isFetching) && searchTerm.length > 2 && (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>

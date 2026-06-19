@@ -9,7 +9,6 @@ Aplikacja stanowi nowoczesny panel administracyjny (Dashboard Layout) oparty na 
 - **Zarządzanie routingiem:** React Router DOM v6
 - **Zarządzanie stanem i warstwa danych:** TanStack Query v5 (React Query)
 - **Silnik animacji:** Framer Motion & CSS keyframes
-- **System analityczny:** Plausible Tracker (`plausible-tracker`)
 
 ## Link do stony:
 https://dilo993.github.io/Ziu_Projekt/
