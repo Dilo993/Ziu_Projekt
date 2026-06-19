@@ -31,6 +31,7 @@ export default function ApiSearch() {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         helperText="Wpisz co najmniej 3 znaki"
+        aria-label="Wyszukaj"
         sx={{ mb: 4 }}      />
 
       {(isLoading || isFetching) && searchTerm.length > 2 && (

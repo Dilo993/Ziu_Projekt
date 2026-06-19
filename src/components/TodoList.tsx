@@ -64,10 +64,11 @@ export default function TodoList() {
               minWidth: 150,
               color: '#003cd6',
               borderColor: '#003cd6',
+              backgroundColor: 'background.paper',
               fontWeight: 600,
               '&:hover': {
                 borderColor: '#002699',
-                backgroundColor: 'rgba(0, 60, 214, 0.04)',
+                backgroundColor: 'background.paper',
               }
             }}
           >
@@ -120,7 +121,7 @@ export default function TodoList() {
                       variant="body1"
                       sx={{
                         textDecoration: task.completed ? 'line-through' : 'none',
-                        color: task.completed ? 'rgba(0, 0, 0, 0.65)' : 'text.primary',
+                        color: 'text.primary',
                         fontWeight: task.completed ? 400 : 500
                       }}
                     >
