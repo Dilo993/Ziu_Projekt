@@ -12,3 +12,6 @@ Aplikacja stanowi nowoczesny panel administracyjny (Dashboard Layout) oparty na 
 
 ## Link do stony:
 https://dilo993.github.io/Ziu_Projekt/
+
+## Figma :
+https://www.figma.com/design/YmNsL7NGa6lKsxYa8k8Rx7/ZIU_Projekt?node-id=0-1&p=f&t=CWHzdSvjjE0HuYFG-0
